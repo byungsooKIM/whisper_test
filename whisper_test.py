@@ -20,7 +20,7 @@ add_bg_from_url()
 #st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/OpenAI_Logo.svg/512px-OpenAI_Logo.svg.png", width=200)
 
 model = whisper.load_model("small")
-result_kr = model.transcribe("kr_food.mp3", fp16=False)
+#result_kr = model.transcribe("kr_food.mp3", fp16=False)
 #result_en = model.transcribe("en_food.mp3", fp16=False)
 #result_jp = model.transcribe("jp_food.mp3", fp16=False)
 #result_cn = model.transcribe("cn_food.mp3", fp16=False)
@@ -34,12 +34,12 @@ with st.expander(":material/experiment: 동작 원리"):
 
 st.space(size="small")
 
-st.audio("kr_food.mp3", format="audio/mpeg", loop=False)
-if st.button("**:material/hearing: 음성 변환하기**"):
-    container = st.container(border=True)
-    container.write(result_kr["text"])
-st.divider()
-st.space(size="small")
+#st.audio("kr_food.mp3", format="audio/mpeg", loop=False)
+#if st.button("**:material/hearing: 음성 변환하기**"):
+#    container = st.container(border=True)
+#    container.write(result_kr["text"])
+#st.divider()
+#st.space(size="small")
 
 audio_value = st.audio_input("Whisper 테스트 해 보기")
 
