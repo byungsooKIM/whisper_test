@@ -1,64 +1,74 @@
-import whisper
 import streamlit as st
-import tempfile
+from elevenlabs.client import ElevenLabs
 
-def add_bg_from_url():
-    st.markdown(
-        f"""
-         <style>
-         .stApp {{
-             background-image: url("https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80");
-             background-attachment: fixed;
-             background-size: cover
+client = ElevenLabs(api_key="sk_275f993c9c86037cc94c89e6fabc14e73ef0f09c0267120e") # 내 키 값
+#client = ElevenLabs(api_key="sk_e6622d422573cdf55335d41b25a44beb4d133bacd269351e") # UX연구소 키
 
-         }}
-         </style>
-         """,
-        unsafe_allow_html=True
-    )
-add_bg_from_url()
-#st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/OpenAI_Logo.svg/512px-OpenAI_Logo.svg.png", width=200)
+# ----------------------------------------------------------------------------------------------------------------------
+#    voice_id="AW5wrnG1jVizOYY7R1Oo", # JiYoung
+#    voice_id="uyVNoMrnUku1dZyVEXwD", # Anna KIM - tender & calm
+#    voice_id="jB1Cifc2UQbq1gR3wnb0", # Bin - measured & calm
 
-model = whisper.load_model("small")
-#result_kr = model.transcribe("kr_food.mp3", fp16=False)
-#result_en = model.transcribe("en_food.mp3", fp16=False)
-#result_jp = model.transcribe("jp_food.mp3", fp16=False)
-#result_cn = model.transcribe("cn_food.mp3", fp16=False)
+#    voice_id="vmbKDbw1io4r5R5ZswSu", # UX 연구소 클로닝 목소리 A
+#    voice_id="itIgbYWtVqU1f1OFCATz", # UX 연구소 클로닝 목소리 B
+#    voice_id="EmN5s2YqV00L0Q9czmr4", # UX 연구소 클로닝 목소리 C
+#    voice_id="AFDZEZj5SxJEyUCyskEt", # UX 연구소 클로닝 목소리 E (남성)
+# ----------------------------------------------------------------------------------------------------------------------
 
-st.markdown("<h3 style='text-align: center; color: #333333;font-size: 34px;'>Whisper 데모</h3>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: #333333;font-size: 24px;'>(ChatGPT에서 사용하는 AI 음성인식 기능)</h3>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: #333333;font-size: 14px;'>68만 시간 & 100개 나라의 언어를 학습하여, 정확도가 높고 인식속도가 빠름</h3>", unsafe_allow_html=True)
+# 세션 상태에 voice_id 없으면 초기화
+if "voice_id" not in st.session_state:
+    st.session_state.voice_id = None
 
-with st.expander(":material/experiment: 동작 원리"):
-    st.image("https://raw.githubusercontent.com/openai/whisper/main/approach.png")
+st.markdown("<h1 style='text-align: center; color: #555555;font-size: 22px;'>1. 화자를 선택하세요</h1>", unsafe_allow_html=True)
 
+cols = st.columns(3, border=True)
+with cols[0]:
+    if st.button("**JiYoung**"):
+        st.session_state.voice_id = "AW5wrnG1jVizOYY7R1Oo"
+with cols[1]:
+    if st.button("**Anna KIM**"):
+        st.session_state.voice_id = "uyVNoMrnUku1dZyVEXwD"
+with cols[2]:
+    if st.button("**Bin**"):
+        st.session_state.voice_id = "jB1Cifc2UQbq1gR3wnb0"
 st.space(size="small")
 
-#st.audio("kr_food.mp3", format="audio/mpeg", loop=False)
-#if st.button("**:material/hearing: 음성 변환하기**"):
-#    container = st.container(border=True)
-#    container.write(result_kr["text"])
-#st.divider()
-#st.space(size="small")
+#cols = st.columns(4, border=True)
+#with cols[0]:
+#    if st.button("**LG A 화자**"):
+#        st.session_state.voice_id = "vmbKDbw1io4r5R5ZswSu"
+#with cols[1]:
+#    if st.button("**LG B 화자**"):
+#        st.session_state.voice_id = "itIgbYWtVqU1f1OFCATz"
+#with cols[2]:
+#    if st.button("**LG C 화자**"):
+#        st.session_state.voice_id = "EmN5s2YqV00L0Q9czmr4"
+#with cols[3]:
+#    if st.button("**LG E 화자**"):
+#        st.session_state.voice_id = "AFDZEZj5SxJEyUCyskEt"
 
-audio_value = st.audio_input("Whisper 테스트 해 보기")
+st.divider()
+st.markdown("<h1 style='text-align: center; color: #555555;font-size: 22px;'>2. 텍스트를 입력해 보세요</h1>", unsafe_allow_html=True)
+text = st.text_input("입력창", value="이 목소리는 일레븐랩스의 샘플 목소리입니다.")
 
-if audio_value is not None:
+st.divider()
+st.markdown("<h1 style='text-align: center; color: #555555;font-size: 22px;'>3. 생성된 목소리를 들어보세요</h1>", unsafe_allow_html=True)
 
-    # Streamlit에서 받은 오디오 데이터를 임시 파일로 저장
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-        tmp.write(audio_value.getbuffer())
-        audio_path = tmp.name
+if st.button("들어보기"):
+    if not st.session_state.voice_id:
+        st.error("먼저 화자를 선택해 주세요.")
+    else:
+        audio = client.text_to_speech.convert(
+            text=text,
+            voice_id=st.session_state.voice_id,
+            model_id="eleven_multilingual_v2"
+        )
 
-    # 업로드한 오디오 재생
-    #st.audio(audio_path)
+        save_file_path = "temp.mp3"
+        with open(save_file_path, "wb") as f:
+            for chunk in audio:
+                if chunk:
+                    f.write(chunk)
 
-    # Whisper에 파일 경로 전달
-    result_test = model.transcribe(audio_path, language="ko")
-#    st.write(result_test["text"])
-    if st.button("**:material/voice_chat: 인식 결과 보기**"):
-        container = st.container(border=True)
-        container.write(result_test["text"])
-
-else:
-    st.info("녹음 또는 업로드한 오디오가 없습니다.")
+        st.success("생성이 완료되었습니다. 아래에서 들어보세요.")
+        st.audio(save_file_path, format="audio/mp3")
