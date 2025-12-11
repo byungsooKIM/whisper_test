@@ -5,17 +5,6 @@ api_key = st.secrets["ELEVENLABS_API_KEY"]
 st.session_state.voice_id = st.secrets["VOICE_ID"]
 client = ElevenLabs(api_key=api_key)
 
-# ----------------------------------------------------------------------------------------------------------------------
-#    voice_id="AW5wrnG1jVizOYY7R1Oo", # JiYoung
-#    voice_id="uyVNoMrnUku1dZyVEXwD", # Anna KIM - tender & calm
-#    voice_id="jB1Cifc2UQbq1gR3wnb0", # Bin - measured & calm
-
-#    voice_id="vmbKDbw1io4r5R5ZswSu", # UX 연구소 클로닝 목소리 A
-#    voice_id="itIgbYWtVqU1f1OFCATz", # UX 연구소 클로닝 목소리 B
-#    voice_id="EmN5s2YqV00L0Q9czmr4", # UX 연구소 클로닝 목소리 C
-#    voice_id="AFDZEZj5SxJEyUCyskEt", # UX 연구소 클로닝 목소리 E (남성)
-# ----------------------------------------------------------------------------------------------------------------------
-
 # 세션 상태에 voice_id 없으면 초기화
 if "voice_id" not in st.session_state:
     st.session_state.voice_id = None
@@ -33,20 +22,6 @@ with cols[2]:
     if st.button("**Bin**"):
         st.session_state.voice_id = st.secrets["VOICE_ID"]
 st.space(size="small")
-
-#cols = st.columns(4, border=True)
-#with cols[0]:
-#    if st.button("**LG A 화자**"):
-#        st.session_state.voice_id = "vmbKDbw1io4r5R5ZswSu"
-#with cols[1]:
-#    if st.button("**LG B 화자**"):
-#        st.session_state.voice_id = "itIgbYWtVqU1f1OFCATz"
-#with cols[2]:
-#    if st.button("**LG C 화자**"):
-#        st.session_state.voice_id = "EmN5s2YqV00L0Q9czmr4"
-#with cols[3]:
-#    if st.button("**LG E 화자**"):
-#        st.session_state.voice_id = "AFDZEZj5SxJEyUCyskEt"
 
 st.divider()
 st.markdown("<h1 style='text-align: center; color: #555555;font-size: 22px;'>2. 텍스트를 입력해 보세요</h1>", unsafe_allow_html=True)
