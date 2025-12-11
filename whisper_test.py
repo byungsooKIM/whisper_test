@@ -2,6 +2,7 @@ import streamlit as st
 from elevenlabs.client import ElevenLabs
 
 api_key = st.secrets["ELEVENLABS_API_KEY"]
+st.session_state.voice_id = st.secrets["VOICE_ID"]
 client = ElevenLabs(api_key=api_key)
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -24,13 +25,13 @@ st.markdown("<h1 style='text-align: center; color: #555555;font-size: 22px;'>1. 
 cols = st.columns(3, border=True)
 with cols[0]:
     if st.button("**JiYoung**"):
-        st.session_state.voice_id = "AW5wrnG1jVizOYY7R1Oo"
+        st.session_state.voice_id = st.secrets["VOICE_ID"]
 with cols[1]:
     if st.button("**Anna KIM**"):
-        st.session_state.voice_id = "uyVNoMrnUku1dZyVEXwD"
+        st.session_state.voice_id = st.secrets["VOICE_ID"]
 with cols[2]:
     if st.button("**Bin**"):
-        st.session_state.voice_id = "jB1Cifc2UQbq1gR3wnb0"
+        st.session_state.voice_id = st.secrets["VOICE_ID"]
 st.space(size="small")
 
 #cols = st.columns(4, border=True)
