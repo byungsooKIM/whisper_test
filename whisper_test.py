@@ -1,8 +1,8 @@
 import streamlit as st
 from elevenlabs.client import ElevenLabs
 
-client = ElevenLabs(api_key="sk_275f993c9c86037cc94c89e6fabc14e73ef0f09c0267120e") # 내 키 값
-#client = ElevenLabs(api_key="sk_e6622d422573cdf55335d41b25a44beb4d133bacd269351e") # UX연구소 키
+api_key = st.secrets["ELEVENLABS_API_KEY"]
+client = ElevenLabs(api_key=api_key)
 
 # ----------------------------------------------------------------------------------------------------------------------
 #    voice_id="AW5wrnG1jVizOYY7R1Oo", # JiYoung
